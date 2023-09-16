@@ -22,8 +22,8 @@ export class OrganisationsController {
   }
 
   @Get('/:id')
-  getOrganisation(@Param('id') id: string) {
-    return this.organisationsService.getById(Number(id));
+  getOrganisation(@Param('id') id: number) {
+    return this.organisationsService.getById(id);
   }
 
   @Post()
@@ -34,15 +34,15 @@ export class OrganisationsController {
 
   @Delete('/:id')
   @HttpCode(204)
-  deleteOrganisation(@Param('id') id: string) {
-    return this.organisationsService.remove(Number(id));
+  deleteOrganisation(@Param('id') id: number) {
+    return this.organisationsService.remove(id);
   }
 
   @Patch('/:id')
   updateOrganisation(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() body: CreateOrganisationDto,
   ) {
-    return this.organisationsService.update(Number(id), body.name);
+    return this.organisationsService.update(id, body.name);
   }
 }
