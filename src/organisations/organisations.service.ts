@@ -29,6 +29,6 @@ export class OrganisationsService {
   async update(id: number, name: string) {
     const organisation = await this.repo.findOne({ where: { id } });
     organisation.name = name;
-    this.repo.save(organisation);
+    return this.repo.save(organisation);
   }
 }
