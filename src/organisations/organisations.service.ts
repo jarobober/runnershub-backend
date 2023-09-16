@@ -1,48 +1,34 @@
 import { Injectable } from '@nestjs/common';
-
-const organisations = [
-  {
-    id: 1,
-    name: 'Maraton Warszawski',
-  },
-  {
-    id: 2,
-    name: 'RunFree Organisation',
-  },
-  {
-    id: 3,
-    name: 'Runners Club',
-  },
-];
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Organisation } from './organisation.entity';
 
 @Injectable()
 export class OrganisationsService {
+  constructor(
+    @InjectRepository(Organisation) private repo: Repository<Organisation>,
+  ) {}
   getAll() {
-    return organisations;
+    return this.repo.find();
   }
 
   getById(id: number) {
-    return organisations.find((organisation) => organisation.id === id);
+    return this.repo.findOne({ where: { id } });
   }
 
   create(name: string) {
-    const id =
-      Math.max(...organisations.map((organisation) => organisation.id)) + 1;
-    const newOrganisation = { id, name };
-    organisations.push(newOrganisation);
+    const newOrganisation = this.repo.create({ name });
+    return this.repo.save(newOrganisation);
   }
 
-  remove(id: number) {
-    const index = organisations.findIndex(
-      (organisation) => organisation.id === id,
-    );
-    organisations.splice(index, 1);
+  async remove(id: number) {
+    const organisation = await this.repo.findOne({ where: { id } });
+    return this.repo.remove(organisation);
   }
 
-  update(id: number, name: string) {
-    const index = organisations.findIndex(
-      (organisation) => organisation.id === id,
-    );
-    organisations[index].name = name;
+  async update(id: number, name: string) {
+    const organisation = await this.repo.findOne({ where: { id } });
+    organisation.name = name;
+    return this.repo.save(organisation);
   }
 }
