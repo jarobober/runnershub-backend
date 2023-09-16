@@ -8,14 +8,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [
     OrganisationsModule,
     TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'admin',
-      password: 'admin',
-      database: 'runnershub',
-      entities: [],
+      type: 'sqlite',
+      database: 'db.sqlite',
       synchronize: true,
+      entities: ['dist/**/*.entity{.ts,.js}'],
     }),
   ],
   controllers: [AppController],
