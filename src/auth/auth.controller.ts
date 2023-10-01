@@ -27,7 +27,6 @@ export class AuthController {
 
   @Post('/register')
   async register(@Request() req) {
-    console.log('req', req);
     const body = req.body;
     return this.organisationsService.create(
       body.name,
