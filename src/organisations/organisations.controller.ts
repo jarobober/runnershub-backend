@@ -28,8 +28,11 @@ export class OrganisationsController {
 
   @Post()
   addOrganisation(@Body() body: CreateOrganisationDto) {
-    console.log(body);
-    return this.organisationsService.create(body.name);
+    return this.organisationsService.create(
+      body.name,
+      body.email,
+      body.password,
+    );
   }
 
   @Delete('/:id')

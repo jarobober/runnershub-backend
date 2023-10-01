@@ -5,4 +5,12 @@ export class CreateOrganisationDto {
   @ApiProperty()
   @IsString()
   name: string;
+
+  @ApiProperty()
+  @IsString()
+  email: string;
+
+  @ApiProperty()
+  @IsString()
+  password: string;
 }
