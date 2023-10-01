@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Organisation } from './organisation.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class OrganisationsService {
@@ -16,8 +17,19 @@ export class OrganisationsService {
     return this.repo.findOne({ where: { id } });
   }
 
-  create(name: string) {
-    const newOrganisation = this.repo.create({ name });
+  getByEmail(email: string) {
+    return this.repo.findOne({ where: { email } });
+  }
+
+  async create(name: string, email: string, password: string) {
+    console.log(name, email, password);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    const newOrganisation = this.repo.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
     return this.repo.save(newOrganisation);
   }
 
